@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
-import { StyleSheet, Text, View, Button, TextInput, Platform } from 'react-native';
+import { StyleSheet, Text, View, Button, TextInput, Platform, FlatList } from 'react-native';
 
 export default function App() {
 
@@ -14,7 +14,7 @@ export default function App() {
   function addGoalHandler() {
     setGoals(currentCourseGoals => [
       ...currentCourseGoals, 
-      enteredGoalText,
+      {text: enteredGoalText, key: Math.random().toString()},
     ])
   }
 
@@ -30,7 +30,15 @@ export default function App() {
         />
       </View>
       <View style={styles.goalsContainer}>
-        {goals.map((goal) => <Text style={styles.goalTextStyle} key={goal}>{goal}</Text>)}
+        <FlatList data={goals}
+          renderItem={(itemData) => {
+            return(
+              <Text style={styles.goalTextStyle}>
+                {itemData.item.text}
+              </Text>
+            )
+          }}
+        />
       </View>
     </View>
   );
@@ -65,6 +73,7 @@ const styles = StyleSheet.create({
   goalTextStyle: {
     borderWidth: 1,
     borderRadius: 10,
+    padding: 8,
     overflow: 'hidden',
     marginBottom: 10,
     fontSize: '30rem',
@@ -72,7 +81,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     justifyContent: 'center',
     fontFamily: Platform.OS === 'ios' ? 'San Francisco' : 'Roboto',
-    backgroundColor: '#5DADE2',
+    backgroundColor: '#5e0acc',
     color: 'white'
   }
 });
